@@ -3,4 +3,4 @@
 
 Entity Structure and rules
 
-![rules](https://user-images.githubusercontent.com/42313363/63685222-784ab900-c807-11e9-84ac-fecab3fe6805.PNG)
+![rules - Copy](https://user-images.githubusercontent.com/42313363/63685639-8d741780-c808-11e9-8fc9-b969e84b70f4.PNG)
