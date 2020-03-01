@@ -4,71 +4,23 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.sec.model.*;
-import com.example.sec.model.repository.AuthorRepository;
-import com.example.sec.model.repository.BookRepository;
-import com.example.sec.model.repository.BookStoreRepository;
-import com.example.sec.model.repository.CategoryRepository;
-import com.example.sec.model.repository.CityRepository;
-import com.example.sec.model.repository.PriceRepository;
-import com.example.sec.model.service.BookService;
+import com.example.sec.service.BookService;
 
 @CrossOrigin(origins = "http://localhost:8000/")
 @RestController
 public class MainController {
 
+	/* inject */
 	@Autowired
 	BookService service;
-	@Autowired
-	CityRepository cityRepository;
-	@Autowired 
-	CategoryRepository categoryRepository;
-	@Autowired
-	PriceRepository priceRepository;
-	@Autowired
-	BookRepository bookRepository;
-	@Autowired 
-	BookStoreRepository bookStoreRepository;
-	@Autowired
-	AuthorRepository authorRepository;
-	
-	@GetMapping("/")
-	public String bookGenerator() {
-		Category category = new Category();
-		category.setCategory("Adventure");
-		this.categoryRepository.save(category);
-		
-		City city = new City();
-		city.setCity("Istanbul");
-		this.cityRepository.save(city);
-		
-		Price price = new Price();
-		price.setPrice(25);
-		price.setCurrency("TL");
-		price.setCity(city);
-		this.priceRepository.save(price);
-		
-		Author oguzAtay = new Author();
-		oguzAtay.setName("Oguz Atay");
-		this.authorRepository.save(oguzAtay);
-		
-		Book tutunamayanlar = new Book();
-		tutunamayanlar.setName("Tutunamayanlar");
-		tutunamayanlar.setAuthor(oguzAtay);
-		tutunamayanlar.setPrice(price);
-		tutunamayanlar.setCategory(category);
-		this.bookRepository.save(tutunamayanlar);
-		
-        BookStore kitapci = new BookStore();
-        kitapci.setName("Eminonu Kitapcisi");
-        List<Book> books = new ArrayList<Book>();
-        books.add(tutunamayanlar);
-        kitapci.setBooks(books);
-        this.bookStoreRepository.save(kitapci);
-		
-		return "Book Store have generated.";
+
+	/* generate datas by manual */
+	@GetMapping("/generate")
+	public void bookStoreGenerator() {
+		service.manualBookStoreGenerator();
 	}
 	
-	//get
+	/*get*/
 	@GetMapping("/getAllCategory")
 	public List<Category> getAllCategory(){
 		return service.getAllCategory();
@@ -100,7 +52,7 @@ public class MainController {
 		return service.getAllBookstore();
 	}
 	
-	//get by
+	/*get by*/
 	@PostMapping("/findByCategory")
 	public List<Category> findByCategory(@RequestParam("category") String category){
 		return service.findByCategory(category);
@@ -136,7 +88,7 @@ public class MainController {
 		return service.findByBookStoreName(name);
 	}
 	
-	//create
+	/*create new*/
 	@PostMapping("/createNewCategory")
 	public Category createNewCategory(@RequestBody Category category) {
 		return service.createNewCategory(category);
@@ -167,72 +119,84 @@ public class MainController {
 		return service.createNewBookStore(bookStore);
 	}
 	
-	//update
+	/*update*/
 	@PutMapping("/updateCategory")
 	public Category updateCategory(@RequestBody Category category) {
-		return service.createNewCategory(category);
+		return service.updateCategory(category);
 	}
 	
 	@PostMapping("/updateCity")
 	public City updateCity(@RequestBody City city) {
-		return service.createNewCity(city);
+		return service.updateCity(city);
 	}
 	
 	@PostMapping("/updateAuthor")
 	public Author updateAuthor(@RequestBody Author author) {
-		return service.createNewAuthor(author);
+		return service.updateAuthor(author);
 	}
 	
 	@PostMapping("/updatePrice")
 	public Price updatePrice(@RequestBody Price price) {
-		return service.createNewPrice(price);
+		return service.updatePrice(price);
 	}
 	
 	@PostMapping("/updateBook")
 	public Book updateBook(@RequestBody Book book) {
-		return service.createNewBook(book);
+		return service.updateBook(book);
 	}
 	
 	@PostMapping("/updateBookStore")
 	public BookStore updateBookStore(@RequestBody BookStore bookStore) {
-		return service.createNewBookStore(bookStore);
+		return service.updateBookStore(bookStore);
 	}
 	
-	//delete
+	/*delete*/
     @DeleteMapping("/deleteCategory")
     public boolean deleteCategory(@PathVariable(value = "id") Integer id){
-        categoryRepository.deleteById(id);
-        return true;
+		if(service.deleteCategory(id)){
+			return true;
+		}else
+			return false;
     }
     
     @DeleteMapping("/deleteCity")
     public boolean deleteCity(@PathVariable(value = "id") Integer id){
-        cityRepository.deleteById(id);
-        return true;
+		if(service.deleteCity(id)){
+			return true;
+		}else
+			return false;
     }
     
     @DeleteMapping("/deleteAuthor")
     public boolean deleteAuthor(@PathVariable(value = "id") Integer id){
-        authorRepository.deleteById(id);
-        return true;
+		if(service.deleteAuthor(id)){
+			return true;
+		}else
+			return false;
     }
     
     @DeleteMapping("/deletePrice")
     public boolean deletePrice(@PathVariable(value = "id") Integer id){
-        priceRepository.deleteById(id);
-        return true;
+		if(service.deletePrice(id)){
+			return true;
+		}else
+			return false;
     }
     
     @DeleteMapping("/deleteBook")
     public boolean deleteBook(@PathVariable(value = "id") Integer id){
-        bookRepository.deleteById(id);
-        return true;
+        if(service.deleteBook(id)){
+        	return true;
+		}else
+			return false;
     }
     
     @DeleteMapping("/deleteBookStore")
     public boolean deleteBookStore(@PathVariable(value = "id") Integer id){
-        bookStoreRepository.deleteById(id);
-        return true;
+		if(service.deleteBookStore(id)){
+			return true;
+		}else
+			return false;
     }
 
 }

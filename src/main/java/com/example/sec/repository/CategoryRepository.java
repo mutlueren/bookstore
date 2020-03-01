@@ -1,4 +1,4 @@
-package com.example.sec.model.repository;
+package com.example.sec.repository;
 
 import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
